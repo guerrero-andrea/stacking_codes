@@ -925,7 +925,7 @@ plt.ioff()
 ##
 ################################################################# 
 dirname='stack_example'
-incubes=['stack_example/cont_example.fits']
+images=['stack_example/cont_example.fits']
 incat='lines.csv'
 stampsize = 15
 verbose = 1
@@ -937,13 +937,13 @@ else:
         print('\n Catalog not found. Enter correct path.')
     else:
         cubes=[]
-        for file in incubes:
+        for file in images:
             cubes.append(os.path.isfile(file))
             if os.path.isfile(file) == False:
                 print('\n File %s not found. Enter correct path'%file)
 
         if all(cubes):
             print('Working in folder : %s'%dirname)
-            coords,stacked_cont = stackcont(catalog_name = incat,stampsize = stampsize ,images = incubes,weightstack = False,threshold = 5,overwrite = True,verbose = verbose)
+            coords,stacked_cont = stackcont(catalog_name = incat,stampsize = stampsize ,images = images,weightstack = False,threshold = 5,overwrite = True,verbose = verbose)
             plots_cont(verbose)
             print('Done')
