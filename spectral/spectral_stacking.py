@@ -1149,7 +1149,7 @@ else:
         for file in incubes:
             cubes.append(os.path.isfile(file))
             if os.path.isfile(file) == False:
-                print('\n File {} not found. Enter correct path.'.format(file))
+                print('\n File %s not found. Enter correct path'%file)
 
         if all(cubes):
             print('Working in folder : {}'.format(dirname))
