@@ -107,7 +107,7 @@ def readCoords(coordfile,weightstack, unit='deg'):
         unit:
             Unit of input coordinates. Allows two values, 'deg' and 'rad'.
     """
-    coordreader = csv.reader(open(dirname+'/'+coordfile, 'rb'), delimiter=',')
+    coordreader = csv.reader(open(coordfile, 'rb'), delimiter=',')
     coords = CoordList()
     for row in coordreader:
         x = float(row[0])
@@ -220,9 +220,9 @@ def stack(catalog_name='', stampsize = 3, cubenames= [], weightstack = False, ov
             stampsize     -- Size of target region in arcseconds that will be extracted for stacking.
             cubenames     -- Name of cubes to extract spectra from.
             weightstack   -- If True, takes fourth column of csv catalog and uses it as weight column for stacking.
-            overwrite     -- When this code is executed, files of the continuum emission from each input image are saved. If overwrite = False,
-                             the code will only save these files for new images added. 
-                             If overwrite = True, the code will save these files for all input images. 
+            overwrite     -- When this code is executed, files of the spectrum from galaxies in each cube are saved. If overwrite = False,
+                             the code will only save these files for new cubes added to cubenames. 
+                             If overwrite = True, the code will save these files for all cubes in cubenames. 
             verbose       -- Verbose level from 0 to 3, where 0 provides minimal amount of prints and 3 provides more detailed messages.
         Outputs:
             Stacked spectrum  (and writes out other text and data files)
@@ -430,7 +430,6 @@ def _load_stackspec(imagename,new_stampsize,coords,verbose,weightstack):
 
     return
     
-
 def _stack_stackspec(coords, catalog_name):   
     """
     Takes observed spectra, converts it into rest-frame spectra and inserts it into a large array to be stack.
@@ -852,7 +851,6 @@ def speclinesnr(line,stacked_frequency,stacked_spec,stacked_spec_median,stacked_
             plt.close(fig1)
     return  
 
-
 def plot_range_freq(spec,stacked_frequency,stacked_spec_std,stacked_galaxies,figname, title,startfreq, endfreq,freqstep=50):
     cont=1
     while startfreq < endfreq:
@@ -1036,7 +1034,6 @@ def plot_every_galaxy_observed(lines_freq, lines_label, spec_type = 'observed',f
                 plt.close(fig)
     return
 
-
 def plot_spectra():
     global lines_freq
     global lines_label
@@ -1135,14 +1132,14 @@ plt.ioff()
 
 dirname='stack_example'
 incubes = ['stack_example/spec_example.fits']
-incat='cat.csv'
+incat='stack_example/cat.csv'
 stampsize = 2
 verbose = 1
 
 if os.path.isdir(dirname) == False:
     print('\n Output folder not found. Enter correct path.')
 else:
-    if os.path.isfile(dirname+'/'+incat) == False:
+    if os.path.isfile(incat) == False:
         print('\n Catalogue not found. Enter correct path.')
     else:
         cubes=[]
@@ -1152,7 +1149,7 @@ else:
                 print('\n File %s not found. Enter correct path'%file)
 
         if all(cubes):
-            print('Working in folder : {}'.format(dirname))
+            print('Working in folder : %s'%dirname)
             coords,stacked_spec = stack(catalog_name = incat, stampsize = stampsize , cubenames = incubes, overwrite = True, weightstack = False, verbose = verbose)
             plot_spectra()
             print('Done')
