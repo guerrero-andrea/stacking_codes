@@ -101,7 +101,7 @@ def readCoords(coordfile,weightstack,unit='deg'):
         unit:
             Unit of input coordinates. Allows two values, 'deg' and 'rad'.
     """
-    coordreader = csv.reader(open(dirname+'/'+coordfile, 'rb'), delimiter=',')
+    coordreader = csv.reader(open(coordfile, 'rb'), delimiter=',')
     coords = CoordList()
     for row in coordreader:
         x = float(row[0])
@@ -926,14 +926,14 @@ plt.ioff()
 ################################################################# 
 dirname='stack_example'
 images=['stack_example/cont_example.fits']
-incat='lines.csv'
+incat='stack_example/lines.csv'
 stampsize = 15
 verbose = 1
 
 if os.path.isdir(dirname) == False:
     print('\n Output folder not found. Enter correct path.')
 else:
-    if os.path.isfile(dirname+'/'+incat) == False:
+    if os.path.isfile(incat) == False:
         print('\n Catalog not found. Enter correct path.')
     else:
         im=[]
