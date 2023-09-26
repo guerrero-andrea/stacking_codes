@@ -120,7 +120,7 @@ At the beginning of the plot_spectra function the user can decide a unit to show
    
 ## Continuum stacking code 
 The continuum stacking code reads 2D images of continuum emission (e.g. moment 0 images) and a catalog of galaxy positions (ra, dec), extracts a region of the image for the galaxies in the catalog, combines all images extracted and return a stacked image (2d image) for mean and median. It also returns intermediate results for all images, all detected images and all undetected images.
-Note that the stamp extracted from the image depends on the CDELT of the image (degrees per pixel information from the header), therefore, beware that although this code has the option of using images with different CDELTS values (by rezising the maps), this code was mainly tested using images from the same observation (i.e same CDELT).
+Note that the stamp extracted from the image depends on the CDELT of the image (degrees per pixel information from the header), therefore, beware that although this code has the option of using images with different CDELTS values (by resizing the maps), this code was mainly tested using images from the same observation (i.e same CDELT).
  
 ### Inputs 
 Towards the end of the code you will find the following inputs: 
