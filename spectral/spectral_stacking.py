@@ -1150,6 +1150,6 @@ else:
 
         if all(cubes):
             print('Working in folder : %s'%dirname)
-            coords,stacked_spec = stack(catalog_name = incat, stampsize = stampsize , cubenames = incubes, overwrite = True, weightstack = False, verbose = verbose)
+            stack(catalog_name = incat, stampsize = stampsize , cubenames = incubes, overwrite = True, weightstack = False, verbose = verbose)
             plot_spectra()
             print('Done')
