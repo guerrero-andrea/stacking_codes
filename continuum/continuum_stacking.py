@@ -9,6 +9,7 @@ from matplotlib.patches import Ellipse
 import warnings
 from scipy.interpolate import griddata
 from scipy.ndimage import gaussian_filter
+from scipy.ndimage import interpolation
 
 class CoordList(list):
     """
