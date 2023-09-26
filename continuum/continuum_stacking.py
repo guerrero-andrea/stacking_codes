@@ -348,7 +348,7 @@ def _load_stackcont(imagename,new_stampsize,coords,verbose,weightstack):
             nan.append(i)
     
     if verbose >= 3:
-        print('Number of regions discarded (>25% of nan values): %s'%len(nan))
+        print('Number of regions discarded (>25 percent of nan values): %s'%len(nan))
 
     datacont =  np.delete(datacont, np.array(nan), axis=0)
     galaxyinfo = np.delete(galaxyinfo, np.array(nan), axis =  0)
@@ -431,15 +431,13 @@ def _stack_stackcont(coords, catalog_name,threshold, verbose):
 
         hdu = fits.open(dirname+'/'+outcontname)[0]
         sourcescube = hdu.data
-        npos= sourcescube.shape[0]
-        larger_cube_points = np.meshgrid(larger_cube.shape[2],larger_cube.shape[1])
-
+        npos = sourcescube.shape[0]
         regridded_sources_cube=np.zeros((npos, larger_cube_size, larger_cube_size))
 
         if sourcescube.shape[1] < larger_cube_size :
-            for pos in range(sourcescube.shape[0]):                                     
-                points = np.meshgrid(sourcescube[2],sourcescube[1])
-                regridded_sources_cube[pos,:,:]=griddata(points,sourcescube[pos,:,:], larger_cube_points,method='linear' )
+            factor_im = larger_cube_size / np.float(sourcescube.shape[1])
+            for pos in range(sourcescube.shape[0]):                                      #for each position
+                regridded_sources_cube[pos,:,:]=interpolation.zoom(sourcescube[pos,:,:],factor_im)
         else:
             regridded_sources_cube=np.copy(sourcescube)
 
@@ -857,8 +855,8 @@ def plots_cont(verbose):
     image_file = 'mean_stack.fits'
     figname = 'mean_stack.png'
     stack_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit, title = 'All - Mean')
-    #figname = 'mean_stack_fit.png'
-    #one_panel_fit(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
+    figname = 'mean_stack_fit.png'
+    one_panel_fit(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
     figname = 'mean_stack_smooth.png'
     three_panel_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
     if verbose >= 2:
@@ -868,6 +866,8 @@ def plots_cont(verbose):
     image_file = 'median_stack.fits'
     figname = 'median_stack.png'
     stack_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit, title = 'All - Median')
+    figname = 'median_stack_fit.png'
+    one_panel_fit(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
     figname = 'median_stack_smooth.png'
     three_panel_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
 
@@ -892,6 +892,9 @@ def plots_cont(verbose):
         stack_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit, title = 'Detections - Median')
         figname = 'median_stackdet_smooth.png'
         three_panel_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
+        figname = 'median_stackdet_fit.png'
+        one_panel_fit(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit,upperlimit=False)
+
 
     if os.path.isfile(dirname+'/'+'sources_cube_nondet.fits'):
         cube_file = 'sources_cube_nondet.fits'
@@ -912,11 +915,11 @@ def plots_cont(verbose):
             print('Plot: only non-detections - median')
 
         image_file = 'median_stack_nondet.fits'
-        figname = 'median_stack_nondet.png'
+        figname = 'median_stacknondet.png'
         stack_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit, title = 'Non detections - Median')
-        figname = 'median_stack_nondet_fit.png'
+        figname = 'median_stacknondet_fit.png'
         one_panel_fit(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
-        figname = 'median_stack_nondet_smoothing.png'
+        figname = 'median_stacknondet_smooth.png'
         three_panel_fig(stack_image_file = image_file, stack_cube_file = cube_file, figname = figname , unit=unit)
     return
 
@@ -944,6 +947,6 @@ else:
 
         if all(im):
             print('Working in folder : %s'%dirname)
-            coords,stacked_cont = stackcont(catalog_name = incat,stampsize = stampsize ,images = images,weightstack = False,threshold = 5,overwrite = True,verbose = verbose)
+            stackcont(catalog_name = incat,stampsize = stampsize ,images = images,weightstack = False,threshold = 5,overwrite = True,verbose = verbose)
             plots_cont(verbose)
             print('Done')
