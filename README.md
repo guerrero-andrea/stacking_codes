@@ -2,7 +2,7 @@
 
 ## Overview
 The spectral and continuum stacking codes are two standalone Python scripts for performing spectral stacking (in 3D cubes) and continuum stacking (images) of ALMA datasets, respectively. 
-The codes are presented and described in Guerrero et al. submitted. 
+The codes are presented and described in Guerrero et al. 2023 ([arxiv](https://arxiv.org/abs/2309.16832); [DOI:](https://doi.org/10.1093/mnras/stad2916)) . 
 
 Each code can be used separately within CASA (Common Astronomy Software Applications).
 
